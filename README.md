@@ -1,13 +1,14 @@
-## 📕 Auto-Redbook-Skills（已重构版）
+## 📕 Auto-Redbook-Skills
 
-> 自动撰写小红书笔记、生成多主题卡片、可选自动发布的 Skills  
-> 当前版本对渲染脚本和样式系统做了**一次完整重构**，感谢 Cursor 的辅助开发 🙌
+> Markdown → 小红书精美卡片，一行命令搞定
+> 自动撰写笔记、生成多主题多封面卡片、可选自动发布
 
 ---
 
-## ✨ 本次重构亮点
+## ✨ 核心特性
 
-- **🎨 8 套主题皮肤**：默认简约灰 + Playful Geometric / Neo-Brutalism / Botanical / Professional / Retro / Terminal / Sketch
+- **🎨 13 套主题皮肤**：8 套基础主题 + 5 套高级主题，覆盖各种视觉风格
+- **🖼 5 种封面布局**：经典、居中、全出血、分割、海报，自由组合
 - **📐 4 种分页模式**：
   - `separator`：按 `---` 分隔手动分页
   - `auto-fit`：固定尺寸，自动整体缩放内容，避免溢出/大面积留白
@@ -15,6 +16,7 @@
   - `dynamic`：根据内容动态调整图片高度
 - **🧱 统一卡片结构**：外层浅灰背景（`card-container`）+ 内层主题背景（`card-inner`）+ 纯排版层（`card-content`）
 - **🧠 封面与正文一体化**：封面背景、标题渐变和正文卡片背景都按主题自动匹配
+- **🌙 深色主题感知**：页码颜色根据主题明暗自动适配
 
 ---
 
@@ -39,7 +41,7 @@
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/comeonzhj/Auto-Redbook-Skills.git
+git clone https://github.com/TecSong/Auto-Redbook-Skills.git
 cd Auto-Redbook-Skills
 ```
 
@@ -75,31 +77,74 @@ npx playwright install chromium
 # 最简单用法（默认主题 + 手动分页）
 python scripts/render_xhs.py demos/content.md
 
-# 使用自动分页（推荐：内容长短难控）
-python scripts/render_xhs.py demos/content.md -m auto-split
+# 小红书原生风格 + 居中封面
+python scripts/render_xhs.py content.md -t xiaohongshu -c centered -m auto-split
 
-# 使用固定尺寸自动缩放（auto-fit）
-python scripts/render_xhs.py demos/content_auto_fit.md -m auto-fit
+# 杂志风格 + 海报封面（适合短标题）
+python scripts/render_xhs.py content.md -t magazine -c poster -m separator
 
-# 切换主题（例如 Playful Geometric）
-python scripts/render_xhs.py demos/content.md -t playful-geometric -m auto-split
+# 毛玻璃风格 + 全出血封面
+python scripts/render_xhs.py content.md -t glassmorphism -c full -m auto-split
 
-# 自定义尺寸和像素比
-python scripts/render_xhs.py demos/content.md -t retro -m dynamic --width 1080 --height 1440 --max-height 2160 --dpr 2
+# 暗夜优雅 + 分割封面
+python scripts/render_xhs.py content.md -t dark-elegant -c split -m separator
+
+# 渐变流行 + 居中封面 + 自动分页
+python scripts/render_xhs.py content.md -t gradient-pop -c centered -m auto-split
+
+# 动态高度
+python scripts/render_xhs.py content.md -m dynamic --max-height 4320
 ```
 
 **主要参数：**
 
-| 参数 | 简写 | 说明 |
-|------|------|------|
-| `--theme` | `-t` | 主题：`default`、`playful-geometric`、`neo-brutalism`、`botanical`、`professional`、`retro`、`terminal`、`sketch` |
-| `--mode` | `-m` | 分页模式：`separator` / `auto-fit` / `auto-split` / `dynamic` |
-| `--width` | `-w` | 图片宽度（默认 1080） |
-| `--height` |  | 图片高度（默认 1440，`dynamic` 为最小高度） |
-| `--max-height` |  | `dynamic` 模式最大高度（默认 2160） |
-| `--dpr` |  | 设备像素比，控制清晰度（默认 2） |
+| 参数 | 简写 | 说明 | 默认值 |
+|------|------|------|------|
+| `--theme` | `-t` | 排版主题（见下方列表） | `default` |
+| `--cover` | `-c` | 封面布局风格（见下方列表） | `classic` |
+| `--mode` | `-m` | 分页模式：`separator` / `auto-fit` / `auto-split` / `dynamic` | `separator` |
+| `--output-dir` | `-o` | 输出目录 | 当前工作目录 |
+| `--width` | `-w` | 图片宽度 | `1080` |
+| `--height` |  | 图片高度（`dynamic` 下为最小高度） | `1440` |
+| `--max-height` |  | `dynamic` 模式最大高度 | `4320` |
+| `--dpr` |  | 设备像素比，控制清晰度 | `2` |
 
 > 生成结果会包含：封面 `cover.png` + 正文卡片 `card_1.png`、`card_2.png`...
+
+### 排版主题（`--theme`）
+
+**基础主题：**
+
+| 主题 | 说明 |
+|------|------|
+| `default` | 默认简约浅灰渐变背景 |
+| `playful-geometric` | 活泼几何（Memphis 风格） |
+| `neo-brutalism` | 新粗野主义 |
+| `botanical` | 植物园自然 |
+| `professional` | 专业商务 |
+| `retro` | 复古怀旧 |
+| `terminal` | 终端命令行 |
+| `sketch` | 手绘素描 |
+
+**高级主题：**
+
+| 主题 | 说明 |
+|------|------|
+| `xiaohongshu` | 小红书原生风格（珊瑚红 + 暖粉，贴近官方美学） |
+| `magazine` | 杂志编辑风格（黑白 + 深红点缀，强排版层级） |
+| `glassmorphism` | 毛玻璃风格（现代半透明磨砂质感） |
+| `gradient-pop` | 渐变流行风格（鲜艳渐变色，现代大胆） |
+| `dark-elegant` | 暗夜优雅风格（深色背景 + 金色点缀） |
+
+### 封面布局（`--cover`）
+
+| 布局 | 说明 |
+|------|------|
+| `classic` | 经典布局 - 内卡片 + 装饰圆点 + 强调线（默认） |
+| `centered` | 居中布局 - 内容居中 + 装饰圆环 + 分隔线 |
+| `full` | 全出血布局 - 无内卡片，渐变背景上直接放白色文字，视觉冲击力强 |
+| `split` | 分割布局 - 左侧色块放 Emoji + 右侧白色区放标题副标题 |
+| `poster` | 海报布局 - 超大标题占主体空间，适合短标题强冲击 |
 
 ---
 
@@ -175,7 +220,12 @@ Auto-Redbook-Skills/
 │   ├── professional.css
 │   ├── retro.css
 │   ├── terminal.css
-│   └── sketch.css
+│   ├── sketch.css
+│   ├── xiaohongshu.css       # 高级：小红书原生风格
+│   ├── magazine.css           # 高级：杂志编辑风格
+│   ├── glassmorphism.css      # 高级：毛玻璃风格
+│   ├── gradient-pop.css       # 高级：渐变流行风格
+│   └── dark-elegant.css       # 高级：暗夜优雅风格
 ├── demos/                # 各主题示例渲染结果
 │   ├── content.md
 │   ├── content_auto_fit.md
@@ -185,7 +235,7 @@ Auto-Redbook-Skills/
 │   ├── Sketch/
 │   └── terminal/
 └── scripts/
-    ├── render_xhs.py     # Python 渲染脚本（支持主题 + 分页模式）
+    ├── render_xhs.py     # Python 渲染脚本（支持主题 + 封面布局 + 分页模式）
     ├── render_xhs.js     # Node.js 渲染脚本
     └── publish_xhs.py    # 小红书发布脚本
 ```
@@ -206,7 +256,7 @@ Auto-Redbook-Skills/
 - [Playwright](https://playwright.dev/) - 浏览器自动化渲染
 - [Marked](https://marked.js.org/) - Markdown 解析
 - [xhs](https://github.com/ReaJason/xhs) - 小红书 API 客户端
-- **Cursor** - 本次重构过程中提供了极大帮助 ❤️
+- **Claude Code** - 高级主题 & 封面布局开发
 
 ---
 
