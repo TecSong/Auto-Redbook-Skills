@@ -1,0 +1,215 @@
+/* ============================================
+   Magazine - 杂志编辑风格
+   黑白为主 + 深红点缀，强排版层级感
+   适配小红书卡片渲染
+   ============================================ */
+
+/* 配色定义
+   背景色: #FFFFFF (纯白)
+   前景色: #111111 (深黑)
+   主色: #C41E3A (勃艮第红)
+   浅灰: #F5F5F5 (极淡灰)
+   中灰: #777777 (中性灰)
+   边框: #E0E0E0 (浅灰)
+*/
+
+.card-inner {
+  background-color: #ffffff;
+}
+
+.card-content {
+  color: #222222;
+  font-size: 42px;
+  line-height: 1.8;
+}
+
+/* 标题样式 - 强排版感 */
+.card-content h1 {
+  font-size: 76px;
+  font-weight: 900;
+  color: #111111;
+  margin-bottom: 40px;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  padding-bottom: 25px;
+  border-bottom: 4px solid #111111;
+  position: relative;
+}
+
+.card-content h1::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: #C41E3A;
+}
+
+.card-content h2 {
+  font-size: 56px;
+  font-weight: 800;
+  color: #111111;
+  margin: 55px 0 25px 0;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.card-content h3 {
+  font-size: 48px;
+  font-weight: 700;
+  color: #C41E3A;
+  margin: 40px 0 20px 0;
+  font-style: italic;
+}
+
+/* 段落 - 正文字体稍细 */
+.card-content p {
+  margin-bottom: 35px;
+  color: #333333;
+  font-weight: 400;
+}
+
+/* 粗体 */
+.card-content strong,
+.card-content b {
+  font-weight: 800;
+  color: #111111;
+}
+
+/* 斜体 - 红色强调 */
+.card-content em,
+.card-content i {
+  font-style: italic;
+  color: #C41E3A;
+  font-weight: 500;
+}
+
+/* 链接 */
+.card-content a {
+  color: #C41E3A;
+  text-decoration: none;
+  border-bottom: 1px solid #C41E3A;
+  font-weight: 500;
+}
+
+/* 列表 */
+.card-content ul,
+.card-content ol {
+  margin: 30px 0;
+  padding-left: 60px;
+}
+
+.card-content li {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: #333333;
+}
+
+.card-content li::marker {
+  color: #C41E3A;
+  font-weight: 800;
+}
+
+/* 引用块 - 编辑风大引号 */
+.card-content blockquote {
+  margin: 40px 0;
+  padding: 35px 45px 35px 50px;
+  background-color: #F5F5F5;
+  color: #333333;
+  border-left: 5px solid #C41E3A;
+  border-radius: 0;
+  position: relative;
+}
+
+.card-content blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  font-size: 80px;
+  color: #C41E3A;
+  opacity: 0.3;
+  line-height: 1;
+}
+
+.card-content blockquote p {
+  margin: 0;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* 行内代码 */
+.card-content code {
+  font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 38px;
+  background-color: #F0F0F0;
+  color: #111111;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: 1px solid #E0E0E0;
+}
+
+/* 代码块 */
+.card-content pre {
+  margin: 35px 0;
+  padding: 40px;
+  background-color: #111111;
+  color: #E0E0E0;
+  border-radius: 0;
+  border-left: 5px solid #C41E3A;
+  overflow-x: visible;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.card-content pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-size: 36px;
+  line-height: 1.5;
+}
+
+/* 分割线 - 细线 + 红点 */
+.card-content hr {
+  margin: 55px auto;
+  border: none;
+  height: 1px;
+  background-color: #E0E0E0;
+  position: relative;
+  width: 60%;
+}
+
+/* 图片 */
+.card-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 40px auto;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Tags 标签样式 */
+.tags-container {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 2px solid #111111;
+}
+
+.tag {
+  display: inline-block;
+  background-color: transparent;
+  color: #111111;
+  padding: 10px 26px;
+  border: 2px solid #111111;
+  font-size: 32px;
+  margin: 10px 15px 10px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

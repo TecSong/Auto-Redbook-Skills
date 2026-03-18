@@ -1,0 +1,196 @@
+/* ============================================
+   Gradient Pop - 渐变流行风格
+   鲜艳渐变色 + 现代大胆排版
+   适配小红书卡片渲染
+   ============================================ */
+
+/* 配色定义
+   背景色: #FFFFFF (纯白)
+   前景色: #1a1a2e (深蓝黑)
+   渐变A: #f093fb (粉紫)
+   渐变B: #f5576c (珊瑚红)
+   渐变C: #ffd26f (暖金黄)
+   浅色: #FFF0F6 (淡粉)
+*/
+
+.card-inner {
+  background-color: #ffffff;
+}
+
+.card-content {
+  color: #2d2d3d;
+  font-size: 42px;
+  line-height: 1.75;
+}
+
+/* 标题样式 - 渐变文字 */
+.card-content h1 {
+  font-size: 74px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffd26f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 40px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+}
+
+.card-content h2 {
+  font-size: 58px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 50px 0 25px 0;
+  line-height: 1.35;
+  padding: 0.25em 0.6em;
+  background: linear-gradient(135deg, rgba(240,147,251,0.1) 0%, rgba(245,87,108,0.1) 100%);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.card-content h3 {
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f5576c 0%, #ffd26f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 40px 0 20px 0;
+}
+
+/* 段落 */
+.card-content p {
+  margin-bottom: 35px;
+  color: #3d3d4d;
+}
+
+/* 粗体 - 渐变高亮 */
+.card-content strong,
+.card-content b {
+  font-weight: 800;
+  background: linear-gradient(135deg, #f5576c 0%, #ffd26f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 斜体 */
+.card-content em,
+.card-content i {
+  font-style: italic;
+  color: #f5576c;
+  font-weight: 500;
+}
+
+/* 链接 */
+.card-content a {
+  color: #f5576c;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid #f093fb;
+}
+
+/* 列表 */
+.card-content ul,
+.card-content ol {
+  margin: 30px 0;
+  padding-left: 60px;
+}
+
+.card-content li {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: #3d3d4d;
+}
+
+.card-content li::marker {
+  color: #f5576c;
+  font-weight: 800;
+}
+
+/* 引用块 - 渐变边框 */
+.card-content blockquote {
+  margin: 35px 0;
+  padding: 30px 40px;
+  background: linear-gradient(135deg, rgba(240,147,251,0.06) 0%, rgba(245,87,108,0.06) 100%);
+  color: #3d3d4d;
+  border-left: 6px solid;
+  border-image: linear-gradient(180deg, #f093fb 0%, #f5576c 100%) 1;
+  border-radius: 0 14px 14px 0;
+}
+
+.card-content blockquote p {
+  margin: 0;
+  font-style: normal;
+}
+
+/* 行内代码 */
+.card-content code {
+  font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 38px;
+  background: linear-gradient(135deg, rgba(240,147,251,0.12) 0%, rgba(245,87,108,0.12) 100%);
+  color: #f5576c;
+  padding: 6px 18px;
+  border-radius: 8px;
+}
+
+/* 代码块 */
+.card-content pre {
+  margin: 35px 0;
+  padding: 40px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #e8e8f0;
+  border-radius: 18px;
+  box-shadow: 0 6px 25px rgba(245, 87, 108, 0.1);
+  overflow-x: visible;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.card-content pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 36px;
+  line-height: 1.5;
+}
+
+/* 分割线 - 渐变线 */
+.card-content hr {
+  margin: 50px 0;
+  border: none;
+  height: 3px;
+  background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #ffd26f 100%);
+  border-radius: 2px;
+}
+
+/* 图片 */
+.card-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 18px;
+  margin: 35px auto;
+  box-shadow: 0 6px 25px rgba(245, 87, 108, 0.12);
+}
+
+/* Tags 标签样式 - 渐变标签 */
+.tags-container {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 2px solid rgba(240, 147, 251, 0.15);
+}
+
+.tag {
+  display: inline-block;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 34px;
+  margin: 10px 15px 10px 0;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(245, 87, 108, 0.25);
+}
