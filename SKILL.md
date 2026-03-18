@@ -203,6 +203,55 @@ XHS_COOKIE=your_cookie_string_here
    - 打开开发者工具（F12）
    - 在 Network 标签中查看请求头的 Cookie
 
+### 第五步：自动回复评论（可选）
+
+使用评论回复脚本自动回复笔记下的新评论：
+
+```bash
+python scripts/reply_comments.py [options]
+```
+
+#### 回复参数
+
+| 参数 | 说明 | 默认值 |
+|---|---|---|
+| `--note-id` | 指定笔记 ID（不指定则遍历最近笔记） | 遍历所有 |
+| `--ai` | 使用 AI（Claude）生成个性化回复 | - |
+| `--template` | 使用固定话术回复（与 `--ai` 互斥） | - |
+| `--max-notes` | 最多处理多少篇笔记 | `10` |
+| `--max-replies` | 本次最多回复多少条评论 | `20` |
+| `--interval` | 每次回复间隔秒数（避免风控） | `3` |
+| `--dry-run` | 仅预览评论，不实际回复 | - |
+
+#### 回复模式
+
+1. **AI 智能回复**（推荐）：使用 Claude API 根据评论内容生成个性化回复
+   ```bash
+   python scripts/reply_comments.py --ai
+   ```
+   需要在 `.env` 中配置：
+   ```
+   ANTHROPIC_API_KEY=your_api_key_here
+   ```
+
+2. **固定话术回复**：对所有评论使用相同的回复内容
+   ```bash
+   python scripts/reply_comments.py --template "谢谢支持！❤️"
+   ```
+
+3. **预览模式**：只查看待回复评论，不实际回复
+   ```bash
+   python scripts/reply_comments.py --dry-run
+   ```
+
+#### 安全机制
+
+- 自动跳过自己的评论，不会回复自己
+- 检测已手动回复过的评论，避免重复回复
+- 本地记录已回复的评论 ID（`.replied_comments.json`），跨次运行去重
+- 默认每次回复间隔 3 秒，避免触发平台风控
+- 限制单次最多回复条数，防止异常批量操作
+
 ## 图片规格说明
 
 ### 封面卡片
@@ -223,6 +272,7 @@ XHS_COOKIE=your_cookie_string_here
 - `scripts/render_xhs.py` - Python 渲染脚本
 - `scripts/render_xhs.js` - Node.js 渲染脚本
 - `scripts/publish_xhs.py` - 小红书发布脚本
+- `scripts/reply_comments.py` - 评论自动回复脚本
 
 ### 资源文件
 - `assets/cover.html` - 封面 HTML 模板
