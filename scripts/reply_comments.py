@@ -20,7 +20,7 @@
     # 指定回复规则（不使用AI，使用固定话术）
     python scripts/reply_comments.py --template "谢谢支持！❤️"
 
-    # 使用 AI 生成回复（需配置 ANTHROPIC_API_KEY）
+    # 使用 AI 生成回复（通过 claude -p 命令，无需 API key）
     python scripts/reply_comments.py --ai
 
     # 限制处理的笔记数量和每篇最多回复数
@@ -28,10 +28,9 @@
 
 环境变量（.env）:
     XHS_COOKIE=your_cookie_string_here
-    ANTHROPIC_API_KEY=your_api_key_here  # 可选，--ai 模式需要
 
 依赖安装:
-    pip install xhs python-dotenv anthropic
+    pip install xhs python-dotenv
 """
 
 import argparse
@@ -39,6 +38,7 @@ import os
 import sys
 import json
 import time
+import subprocess
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
@@ -128,40 +128,39 @@ def save_replied_ids(replied_ids: set):
 # --------------- AI 回复生成 ---------------
 
 def generate_ai_reply(comment_content: str, note_title: str, user_nickname: str) -> Optional[str]:
-    """使用 Claude API 生成回复"""
-    api_key = os.getenv('ANTHROPIC_API_KEY')
-    if not api_key:
-        print("⚠️ 未配置 ANTHROPIC_API_KEY，跳过 AI 回复")
-        return None
+    """使用 claude -p 命令生成回复，无需 API key"""
+    prompt = (
+        f"你是一个小红书博主，正在回复粉丝的评论。请根据以下信息生成一条自然、友好的回复。\n\n"
+        f"笔记标题：{note_title}\n"
+        f"评论者昵称：{user_nickname}\n"
+        f"评论内容：{comment_content}\n\n"
+        f"要求：\n"
+        f"- 回复简短自然，像真人聊天，不要AI味\n"
+        f"- 可以适当用1-2个emoji\n"
+        f"- 不超过50字\n"
+        f"- 如果评论是负面的或无意义的，回复要得体友善\n"
+        f"- 不要用\"亲\"、\"宝\"等过于客服化的称呼\n"
+        f"- 只输出回复内容本身，不要任何解释或前缀"
+    )
 
     try:
-        import anthropic
-    except ImportError:
-        print("⚠️ 缺少 anthropic 库，请运行: pip install anthropic")
-        return None
-
-    client = anthropic.Anthropic(api_key=api_key)
-
-    prompt = f"""你是一个小红书博主，正在回复粉丝的评论。请根据以下信息生成一条自然、友好的回复。
-
-笔记标题：{note_title}
-评论者昵称：{user_nickname}
-评论内容：{comment_content}
-
-要求：
-- 回复简短自然，像真人聊天，不要AI味
-- 可以适当用1-2个emoji
-- 不超过50字
-- 如果评论是负面的或无意义的，回复要得体友善
-- 不要用"亲"、"宝"等过于客服化的称呼"""
-
-    try:
-        message = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=150,
-            messages=[{"role": "user", "content": prompt}]
+        result = subprocess.run(
+            ['claude', '-p', prompt, '--model', 'haiku'],
+            capture_output=True, text=True, timeout=30
         )
-        return message.content[0].text.strip()
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip()
+        else:
+            stderr = result.stderr.strip()
+            if stderr:
+                print(f"⚠️ claude 命令错误: {stderr}")
+            return None
+    except FileNotFoundError:
+        print("⚠️ 未找到 claude 命令，请确保已安装 Claude Code CLI")
+        return None
+    except subprocess.TimeoutExpired:
+        print("⚠️ claude 命令超时")
+        return None
     except Exception as e:
         print(f"⚠️ AI 生成回复失败: {e}")
         return None
@@ -285,7 +284,7 @@ def main():
     parser.add_argument(
         '--ai',
         action='store_true',
-        help='使用 AI 生成个性化回复（需配置 ANTHROPIC_API_KEY）'
+        help='使用 AI 生成个性化回复（通过 claude -p 命令）'
     )
     parser.add_argument(
         '--template',
@@ -301,8 +300,8 @@ def main():
     parser.add_argument(
         '--max-replies',
         type=int,
-        default=20,
-        help='本次最多回复多少条评论（默认 20）'
+        default=10,
+        help='本次最多回复多少条评论（默认 10）'
     )
     parser.add_argument(
         '--dry-run',

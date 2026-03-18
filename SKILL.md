@@ -219,19 +219,15 @@ python scripts/reply_comments.py [options]
 | `--ai` | 使用 AI（Claude）生成个性化回复 | - |
 | `--template` | 使用固定话术回复（与 `--ai` 互斥） | - |
 | `--max-notes` | 最多处理多少篇笔记 | `10` |
-| `--max-replies` | 本次最多回复多少条评论 | `20` |
+| `--max-replies` | 本次最多回复多少条评论 | `10` |
 | `--interval` | 每次回复间隔秒数（避免风控） | `3` |
 | `--dry-run` | 仅预览评论，不实际回复 | - |
 
 #### 回复模式
 
-1. **AI 智能回复**（推荐）：使用 Claude API 根据评论内容生成个性化回复
+1. **AI 智能回复**（推荐）：通过 `claude -p` 命令生成个性化回复，无需额外配置 API key
    ```bash
    python scripts/reply_comments.py --ai
-   ```
-   需要在 `.env` 中配置：
-   ```
-   ANTHROPIC_API_KEY=your_api_key_here
    ```
 
 2. **固定话术回复**：对所有评论使用相同的回复内容
@@ -250,7 +246,7 @@ python scripts/reply_comments.py [options]
 - 检测已手动回复过的评论，避免重复回复
 - 本地记录已回复的评论 ID（`.replied_comments.json`），跨次运行去重
 - 默认每次回复间隔 3 秒，避免触发平台风控
-- 限制单次最多回复条数，防止异常批量操作
+- 默认单次最多回复 10 条，防止异常批量操作
 
 ## 图片规格说明
 
